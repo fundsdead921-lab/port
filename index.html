@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHMED EL MAGNETO SITE </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --black: #000000;
+            --dark: #0a0a0a;
+            --neon-green: #00ff9d;
+            --neon-blue: #00d9ff;
+            --neon-purple: #9d00ff;
+            --matrix-green: #00ff41;
+            --gray: #1a1a1a;
+            --light-gray: #333;
+            --glow: 0 0 10px, 0 0 20px, 0 0 30px;
+        }
+        
+        body {
+            background: var(--black);
+            color: white;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 15px;
+            position: relative;
+        }
+        
+        /* MATRIX BACKGROUND */
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        
+        /* CONTAINER */
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 25px 0;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.3);
+            position: relative;
+        }
+        
+        .glitch {
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            color: white;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+        }
+        
+        .glitch::before {
+            color: var(--neon-white);
+            animation: glitch-1 2s infinite;
+        }
+        
+        .glitch::after {
+            color: var(--neon-blue);
+            animation: glitch-2 3s infinite;
+        }
+        
+        @keyframes glitch-1 {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+        
+        @keyframes glitch-2 {
+            0%, 100% { transform: translate(0); }
+            10% { transform: translate(-3px, 0); }
+            30% { transform: translate(0, -3px); }
+            50% { transform: translate(3px, 0); }
+            70% { transform: translate(0, 3px); }
+        }
+        
+        .subtitle {
+            color: var(--neon-blue);
+            font-size: 1.2rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* GLASS CARDS */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            padding: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .glass-card:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            color: var(--neon-green);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            font-size: 1.3rem;
+        }
+        
+        /* SKILLS */
+        .skill-item {
+            margin-bottom: 25px;
+        }
+        
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .skill-name {
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .skill-percent {
+            color: var(--neon-green);
+            font-weight: bold;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            position: relative;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+            box-shadow: 0 0 10px var(--neon-green);
+            width: 0;
+            transition: width 1.5s ease-in-out;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            animation: shine 2s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* TELEGRAM CHANNELS */
+        .channels-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .channel-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .channel-card:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+            transform: scale(1.03);
+        }
+        
+        .channel-number {
+            color: var(--neon-blue);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .channel-name {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .channel-separator {
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--neon-blue), 
+                transparent);
+            margin: 15px 0;
+        }
+        
+        .channel-click {
+            color: var(--neon-green);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        /* CONTACT */
+        .contact-box {
+            text-align: center;
+            padding: 25px;
+        }
+        
+        .telegram-id {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            font-size: 1.4rem;
+            font-family: monospace;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .telegram-id:hover {
+            background: rgba(0, 217, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+        
+        .telegram-id i {
+            color: var(--neon-blue);
+            font-size: 1.6rem;
+        }
+        
+        .copy-btn {
+            background: var(--neon-green);
+            color: black;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .copy-btn:hover {
+            background: #00cc7a;
+            transform: scale(1.05);
+        }
+        
+        /* QUOTE */
+        .quote {
+            text-align: center;
+            font-style: italic;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 3px solid var(--neon-purple);
+            border-right: 3px solid var(--neon-purple);
+            background: rgba(157, 0, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .quote-text {
+            font-size: 1.3rem;
+            color: var(--neon-purple);
+            line-height: 1.6;
+        }
+        
+        /* INFO */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .info-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .info-label {
+            color: var(--neon-blue);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* RESPONSIVE */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 700px;
+                padding: 30px;
+            }
+            
+            .channels-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .glitch {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .channels-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-blue);
+        }
+        
+        /* TOUCH OPTIMIZATIONS */
+        button, 
+        .channel-card,
+        .telegram-id {
+            -webkit-touch-callout: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        
+        /* LOADER */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+        
+        .loader-content {
+            text-align: center;
+        }
+        
+        .loader-text {
+            color: var(--neon-green);
+            font-size: 1.5rem;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .loader-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        
+        .loader-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+            width: 0%;
+            animation: loading 2s ease-in-out forwards;
+        }
+        
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="glitch">Welcome</div>
+            <div class="loader-bar">
+                <div class="loader-fill"></div>
+            </div>
+            <div class="loader-text">ACCESS GRANTED</div>
+        </div>
+    </div>
+    
+    <!-- MATRIX BACKGROUND -->
+    <canvas id="matrix-bg"></canvas>
+    
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header fade-in">
+            <div class="glitch">Ahmed-Mohamed</div>
+            <div class="subtitle">EGYPTIAN PROGRAMMER |</div>
+        </header>
+        
+        <!-- SKILLS -->
+        <section class="glass-card fade-in">
+            <h2 class="card-title"><i class="fas fa-code"></i> CORE COMPETENCIES</h2>
+            
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">BOT DEVELOPMENT</span>
+                    <span class="skill-percent">90%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-width="90"></div>
+                </div>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">GATES & ACCESS</span>
+                    <span class="skill-percent">80%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-width="80"></div>
+                </div>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">TERMINATION</span>
+                    <span class="skill-percent">90%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-width="90"></div>
+                </div>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">CARDING SYSTEMS</span>
+                    <span class="skill-percent">70%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-width="70"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SPECIALTIES -->
+        <section class="glass-card fade-in">
+            <h2 class="card-title"><i class="fas fa-tools"></i> SPECIALIZATIONS</h2>
+            <div style="line-height: 2; padding: 10px 0;">
+                <div style="color: var(--neon-green); margin-bottom: 10px;">
+                    <i class="fas fa-chevron-right"></i> SPAM TOOLS ARCHITECTURE
+                </div>
+                <div style="color: var(--neon-blue); margin-bottom: 10px;">
+                    <i class="fas fa-chevron-right"></i> BOT CREATION & AUTOMATION
+                </div>
+                <div style="color: var(--neon-purple);">
+                    <i class="fas fa-chevron-right"></i> MULTI-PROJECT DEVELOPMENT
+                </div>
+            </div>
+        </section>
+        
+        <!-- TELEGRAM CHANNELS -->
+        <section class="glass-card fade-in">
+            <h2 class="card-title"><i class="fab fa-telegram"></i> TELEGRAM NETWORK</h2>
+            
+            <div class="channels-grid">
+                <!-- Channel 1 -->
+                <div class="channel-card" onclick="window.open('https://t.me/+lwKcXmN7cspiZDY8', '_blank')">
+                    <div class="channel-number">01</div>
+                    <div class="channel-name">ONLY TOOLS</div>
+                    <div class="channel-separator"></div>
+                    <div class="channel-click">
+                        <i class="fas fa-external-link-alt"></i> ACCESS CHANNEL
+                    </div>
+                </div>
+                
+                <!-- Channel 2 -->
+                <div class="channel-card" onclick="window.open('https://t.me/+3sFHlyKLcNkxOWJk', '_blank')">
+                    <div class="channel-number">02</div>
+                    <div class="channel-name">CHANNEL ONLY</div>
+                    <div class="channel-separator"></div>
+                    <div class="channel-click">
+                        <i class="fas fa-external-link-alt"></i> ACCESS CHANNEL
+                    </div>
+                </div>
+                
+                <!-- Channel 3 -->
+                <div class="channel-card" onclick="window.open('https://t.me/+7agRLKg-BiJiMGI0', '_blank')">
+                    <div class="channel-number">03</div>
+                    <div class="channel-name">DROP GATES</div>
+                    <div class="channel-separator"></div>
+                    <div class="channel-click">
+                        <i class="fas fa-external-link-alt"></i> ACCESS CHANNEL
+                    </div>
+                </div>
+                
+                <!-- Channel 4 -->
+                <div class="channel-card" onclick="window.open('https://t.me/+eEQ4T50smfZjZDFk', '_blank')">
+                    <div class="channel-number">04</div>
+                    <div class="channel-name">DROP CC</div>
+                    <div class="channel-separator"></div>
+                    <div class="channel-click">
+                        <i class="fas fa-external-link-alt"></i> ACCESS CHANNEL
+                    </div>
+                </div>
+                
+                <!-- Channel 5 -->
+                <div class="channel-card" onclick="window.open('https://t.me/+o4LeoMdbPbI5NzVk', '_blank')">
+                    <div class="channel-number">05</div>
+                    <div class="channel-name">CHAT ONLY</div>
+                    <div class="channel-separator"></div>
+                    <div class="channel-click">
+                        <i class="fas fa-external-link-alt"></i> ACCESS CHANNEL
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- TECHNOLOGIES -->
+        <section class="glass-card fade-in">
+            <h2 class="card-title"><i class="fas fa-laptop-code"></i> TECHNOLOGIES</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">LANGUAGES</div>
+                    <div class="info-value">PHP | PYTHON | JS| CSS</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">EXPERIENCE</div>
+                    <div class="info-value">4 YEARS</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">FROM</div>
+                    <div class="info-value">EGYPT</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">STATUS</div>
+                    <div class="info-value" style="color: var(--neon-green);">ACTIVE</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- QUOTE -->
+        <section class="quote fade-in">
+            <div class="quote-text">
+                "CHANGING THE SOURCE IS PROOF OF YOUR FAILURE"
+            </div>
+        </section>
+        
+        <!-- CONTACT -->
+        <section class="glass-card fade-in">
+            <h2 class="card-title"><i class="fas fa-network-wired"></i> DIRECT CONNECT</h2>
+            
+            <div class="contact-box">
+                <div class="telegram-id" id="telegramId">
+                    <i class="fab fa-telegram"></i>
+                    <span>@MAGNETOGODFATHER</span>
+                </div>
+                
+                <button class="copy-btn" id="copyBtn">
+                    <i class="fas fa-copy"></i>
+                    COPY IDENTIFIER
+                </button>
+                
+                <div style="margin-top: 25px; color: #888; font-size: 0.9rem;">
+                    <i class="fas fa-shield-alt"></i> ENCRYPTED CONNECTION • PRIVATE NETWORK
+                </div>
+            </div>
+        </section>
+        
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div style="margin-bottom: 15px;">
+                <span style="color: var(--neon-green);"></span>
+                <span style="color: var(--neon-green);">𓆩 ×͜𝐌𝐚𝐆𝐧𝐄𝐓𝐎 𝐓𝐇𝐞 𝐋𝐎𝐬𝐓  🇷🇺ℵ⃤𓆪</span>
+            </div>
+            <div>© 2024 ALL SYSTEMS </div>
+        </footer>
+    </div>
+    
+    <!-- JAVASCRIPT -->
+    <script>
+        // Wait for page to load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loader after 2 seconds
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                }, 500);
+            }, 2000);
+            
+            // Initialize Matrix background
+            initMatrix();
+            
+            // Animate progress bars
+            animateProgressBars();
+            
+            // Setup copy functionality
+            setupCopyButton();
+            
+            // Add fade-in animations on scroll
+            setupScrollAnimations();
+        });
+        
+        // MATRIX RAIN BACKGROUND
+        function initMatrix() {
+            const canvas = document.getElementById('matrix-bg');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Matrix characters
+            const chars = "01";
+            const charArray = chars.split("");
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            
+            // Initialize drops
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.random() * canvas.height;
+            }
+            
+            // Draw function
+            function draw() {
+                // Semi-transparent black for trail effect
+                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = "#00ff41";
+                ctx.font = `${fontSize}px monospace`;
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = charArray[Math.floor(Math.random() * charArray.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    // Reset drop if it reaches bottom or randomly
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    
+                    drops[i]++;
+                }
+            }
+            
+            // Animation loop
+            let matrixInterval = setInterval(draw, 35);
+            
+            // Handle resize
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                clearInterval(matrixInterval);
+                matrixInterval = setInterval(draw, 35);
+            });
+        }
+        
+        // ANIMATE PROGRESS BARS
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            
+            progressBars.forEach(bar => {
+                const width = bar.getAttribute('data-width') + '%';
+                bar.style.width = width;
+            });
+        }
+        
+        // COPY TELEGRAM ID
+        function setupCopyButton() {
+            const copyBtn = document.getElementById('copyBtn');
+            const telegramId = document.getElementById('telegramId');
+            
+            copyBtn.addEventListener('click', function() {
+                const text = '@MAGNETOGODFATHER';
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(text).then(() => {
+                    // Visual feedback
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED!';
+                    copyBtn.style.background = '#00cc7a';
+                    
+                    // Reset after 2 seconds
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy"></i> COPY IDENTIFIER';
+                        copyBtn.style.background = 'var(--neon-green)';
+                    }, 2000);
+                    
+                    // Animation on ID box
+                    telegramId.style.animation = 'none';
+                    setTimeout(() => {
+                        telegramId.style.animation = 'pulse 0.5s';
+                    }, 10);
+                }).catch(err => {
+                    console.error('Copy failed:', err);
+                    copyBtn.innerHTML = '<i class="fas fa-times"></i> ERROR';
+                    copyBtn.style.background = '#ff3333';
+                });
+            });
+            
+            // Also copy when clicking the ID box
+            telegramId.addEventListener('click', function() {
+                copyBtn.click();
+            });
+        }
+        
+        // SCROLL ANIMATIONS
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all glass cards
+            document.querySelectorAll('.glass-card, .quote').forEach(el => {
+                observer.observe(el);
+            });
+        }
+        
+        // TOUCH OPTIMIZATIONS
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        
+        // PREVENT ZOOM ON DOUBLE TAP
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
